@@ -5,6 +5,9 @@ description = ""
 authors = ["ibrahimsaidi <ibrahim.aka.ajax@gmail.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+newsletter_gen = "newsletter_gen.main:main"
+
 [tool.poetry.dependencies]
 python = ">=3.12,<=3.13"
 crewai = "^0.30.11"
