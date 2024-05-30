@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "newsletter-gen"
+name = "research-crew"
 version = "0.1.0"
 description = ""
 authors = ["ibrahimsaidi <ibrahim.aka.ajax@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-newsletter_gen = "newsletter_gen.main:main"
+research_crew = "research_crew.main:main"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<=3.13"
