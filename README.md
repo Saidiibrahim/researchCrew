@@ -25,30 +25,30 @@ poetry install
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
-- Modify `src/newsletter_gen/config/agents.yaml` to define your agents
-- Modify `src/newsletter_gen/config/tasks.yaml` to define your tasks
-- Modify `src/newsletter_gen/crew.py` to add your own logic, tools and specific args
-- Modify `src/newsletter_gen/main.py` to add custom inputs for your agents and tasks
+- Modify `src/research_crew/config/agents.yaml` to define your agents
+- Modify `src/research_crew/config/tasks.yaml` to define your tasks
+- Modify `src/research_crew/crew.py` to add your own logic, tools and specific args
+- Modify `src/research_crew/main.py` to add custom inputs for your agents and tasks
 
 ## Running the Project
 
 To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 
 ```bash
-poetry run newsletter_gen
+poetry run research_crew
 ```
 
-This command initializes the newsletter_gen Crew, assembling the agents and assigning them tasks as defined in your configuration.
+This command initializes the research_crew Crew, assembling the agents and assigning them tasks as defined in your configuration.
 
 This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
 
 ## Understanding Your Crew
 
-The newsletter_gen Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+The research_crew Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
 
 ## Support
 
-For support, questions, or feedback regarding the NewsletterGen Crew or crewAI.
+For support, questions, or feedback regarding the `research_crew` or crewAI.
 - Visit our [documentation](https://docs.crewai.com)
 - Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
 - [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
