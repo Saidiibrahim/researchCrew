@@ -1,5 +1,5 @@
 import pytest
-from newsletter_gen.tools.search import SearchTool
+from research_crew.tools.search import SearchTool
 
 def test_search_tool():
     tool = SearchTool()

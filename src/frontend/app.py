@@ -1,11 +1,11 @@
 import streamlit as st
-from newsletter_gen.crew import NewsletterGenCrew
+from research_crew.crew import ResearchCrew
 
 
-class NewsletterGenUI:
+class ResearchCrewUI:
 
     def load_html_template(self):
-        with open("src/newsletter_gen/config/newsletter_template.html", "r") as file:
+        with open("src/research_crew/config/newsletter_template.html", "r") as file:
             html_template = file.read()
 
         return html_template
@@ -16,7 +16,7 @@ class NewsletterGenUI:
             "personal_message": personal_message,
             "html_template": self.load_html_template(),
         }
-        return NewsletterGenCrew().crew().kickoff(inputs=inputs)
+        return ResearchCrew().crew().kickoff(inputs=inputs)
 
     def newsletter_generation(self):
 
@@ -79,4 +79,5 @@ class NewsletterGenUI:
 
 
 if __name__ == "__main__":
-    NewsletterGenUI().render()
+    ResearchCrewUI().render()
+

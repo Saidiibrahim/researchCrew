@@ -5,7 +5,7 @@ from crewai_tools import (
     SerperDevTool,
     WebsiteSearchTool
 )
-from newsletter_gen.tools.search import SearchTool
+from research_crew.tools.search import SearchTool
 from crewai.project import CrewBase, agent, crew, task
 from langchain_openai import ChatOpenAI
 import streamlit as st
@@ -24,17 +24,10 @@ my_serper_key = os.getenv("SERPAPI_API_KEY")
 docs_tool = DirectoryReadTool("./docs")
 file_tool = FileReadTool("./docs")
 search_tool = SearchTool()
-# web_rag_tool = WebsiteSearchTool()
-
-# Uncomment the following line to use an example of a custom tool
-# from newsletter_gen.tools.custom_tool import MyCustomTool
-
-# Check our tools documentations for more information on how to use them
-# from crewai_tools import SerperDevTool
 
 @CrewBase
-class NewsletterGenCrew():
-	"""NewsletterGen crew"""
+class ResearchCrew():
+	"""Research crew"""
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 

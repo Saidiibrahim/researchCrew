@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from newsletter_gen.crew import NewsletterGenCrew
+from research_crew.crew import NewsletterGenCrew
 
 
 def main():
