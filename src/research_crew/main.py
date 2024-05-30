@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from research_crew.crew import NewsletterGenCrew
+from research_crew.crew import ResearchCrew
 
 
 def main():
@@ -7,7 +7,7 @@ def main():
     inputs = {
         'topic': 'AI LLMs'
     }
-    NewsletterGenCrew().crew().kickoff(inputs=inputs)
+    ResearchCrew().crew().kickoff(inputs=inputs)
 
 
 if __name__ == '__main__':
