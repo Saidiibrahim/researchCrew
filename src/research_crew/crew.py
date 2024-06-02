@@ -1,9 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai_tools import (
     DirectoryReadTool,
-    FileReadTool,
-    SerperDevTool,
-    WebsiteSearchTool
+    FileReadTool
 )
 from research_crew.tools.search import SearchTool
 from crewai.project import CrewBase, agent, crew, task
@@ -126,14 +124,14 @@ class ResearchCrew():
 	@task
 	def newsletter_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['newsletter_task'],
+			config=self.tasks_config['research_task'],
 			agent=self.writer(),
-			output_file='./docs/newsletter.html'
+			output_file='./docs/research_report.html'
 		)
 
 	@crew
 	def crew(self) -> Crew:
-		"""Creates the NewsletterGen crew"""
+		"""Creates the Research crew"""
 		return Crew(
 			agents=[self.researcher(), self.editor(), self.writer()], # Automatically created by the @agent decorator
 			tasks=[self.research_task(), self.edit_task(), self.newsletter_task()], # Automatically created by the @task decorator

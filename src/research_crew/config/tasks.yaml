@@ -14,8 +14,8 @@ edit_task:
     A fully fledge reports with the mains topics, each with a full section of information.
     Formated as markdown with out '```'
 
-newsletter_task:
+research_task:
   description: >
-    Create a newsletter based on the information you have.
+    Create a research report based on the information you have.
   expected_output: >
-    A newsletter in html format.
+    A research report in html format.

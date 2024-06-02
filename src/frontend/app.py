@@ -5,77 +5,67 @@ from research_crew.crew import ResearchCrew
 class ResearchCrewUI:
 
     def load_html_template(self):
-        with open("src/research_crew/config/newsletter_template.html", "r") as file:
+        with open("src/research_crew/config/research_template.html", "r") as file:
             html_template = file.read()
 
         return html_template
 
-    def generate_newsletter(self, topic, personal_message):
+    def generate_research(self, topic):
         inputs = {
             "topic": topic,
-            "personal_message": personal_message,
             "html_template": self.load_html_template(),
         }
         return ResearchCrew().crew().kickoff(inputs=inputs)
 
-    def newsletter_generation(self):
+    def research_generation(self):
 
         if st.session_state.generating:
-            st.session_state.newsletter = self.generate_newsletter(
-                st.session_state.topic, st.session_state.personal_message
+            st.session_state.research = self.generate_research(
+                st.session_state.topic
             )
 
-        if st.session_state.newsletter and st.session_state.newsletter != "":
+        if st.session_state.research and st.session_state.research != "":
             with st.container():
-                st.write("Newsletter generated successfully!")
+                st.write("Research generated successfully!")
                 st.download_button(
                     label="Download HTML file",
-                    data=st.session_state.newsletter,
-                    file_name="newsletter.html",
+                    data=st.session_state.research,
+                    file_name="research.html",
                     mime="text/html",
                 )
             st.session_state.generating = False
 
     def sidebar(self):
         with st.sidebar:
-            st.title("Newsletter Generator")
+            st.title("Research Crew")
 
             st.write(
                 """
-                To generate a newsletter, enter a topic and a personal message. \n
-                Your team of AI agents will generate a newsletter for you!
+                To conduct research on a topic, enter a topic. \n
+                Your team of AI agents will generate research report for you!
                 """
             )
 
-            st.text_input("Topic", key="topic", placeholder="USA Stock Market")
+            st.text_input("Topic", key="topic", placeholder="Koalas")
 
-            st.text_area(
-                "Your personal message (to include at the top of the newsletter)",
-                key="personal_message",
-                placeholder="Dear readers, welcome to the newsletter!",
-            )
-
-            if st.button("Generate Newsletter"):
+            if st.button("Generate Report"):
                 st.session_state.generating = True
 
     def render(self):
-        st.set_page_config(page_title="Newsletter Generation", page_icon="📧")
+        st.set_page_config(page_title="Research Crew", page_icon="🐨")
 
         if "topic" not in st.session_state:
             st.session_state.topic = ""
 
-        if "personal_message" not in st.session_state:
-            st.session_state.personal_message = ""
-
-        if "newsletter" not in st.session_state:
-            st.session_state.newsletter = ""
+        if "research" not in st.session_state:
+            st.session_state.research = ""
 
         if "generating" not in st.session_state:
             st.session_state.generating = False
 
         self.sidebar()
 
-        self.newsletter_generation()
+        self.research_generation()
 
 
 if __name__ == "__main__":
