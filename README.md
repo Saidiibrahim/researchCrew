@@ -1,27 +1,75 @@
 # 🐨 Research Crew
 
-Welcome to the Research Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+Welcome to the Research Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a GUI for a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. The framework used for the GUI is [Streamlit](https://streamlit.io/).
+
+Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
 
 ## Installation
 
 Ensure you have Python >=3.10 <=3.13 installed on your system. This project uses [Poetry](https://python-poetry.org/) for dependency management and package handling, offering a seamless setup and execution experience.
 
-First, if you haven't already, install Poetry:
+## Cloning the Repository
+
+To get started with the Research Crew project, you first need to clone the repository from GitHub.
+Open your terminal and run the following command:
 
 ```bash
-pip install poetry
+git clone https://github.com/Saidiibrahim/researchCrew.git
 ```
 
-Next, navigate to your project directory and install the dependencies:
+This will create a local copy of the repository on your machine.
 
-1. First lock the dependencies and then install them:
+## Setting Up
+
+After cloning the repository, navigate into the project directory and install the dependencies using Poetry:
+
 ```bash
-poetry lock
-```
-```bash
+cd research-crew
 poetry install
 ```
-### Customizing
+
+This will set up a virtual environment and install all required dependencies.
+
+## Usage
+
+To run the application, run the following command from the project directory:
+
+```bash
+streamlit run src/frontend/app.py
+```
+
+This start the streamlit app and you can interact with the application.
+
+## Project Structure
+
+```text
+research-crew/
+├── .venv/
+├── cookbook/
+├── docs/
+├── src/
+│   ├── frontend/
+│   ├── research_crew/
+│   │   ├── config/
+│   │   ├── tools/
+│   │   │   ├── __init__.py
+│   │   │   ├── crew.py
+│   │   │   └── main.py
+├── tests/
+├── .env.example
+├── .gitignore
+├── poetry.lock
+├── pyproject.toml
+└── README.md
+```
+
+- `src/research_crew/`: Contains the core logic and configuration for the research crew.
+- `src/frontend/`: Contains the Streamlit app and UI components.
+- `src/research_crew/config/`: Configuration files for the research crew.
+- `src/research_crew/crew.py`: The main file that initializes the crew and assigns tasks to agents.
+- `src/research_crew/main.py`: The main file that runs the crew and handles the execution of tasks.
+
+## Customizing
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
@@ -46,12 +94,8 @@ This example, unmodified, will run the create a `report.md` file with the output
 
 The research_crew Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
 
-## Support
+## Contributing
 
-For support, questions, or feedback regarding the `research_crew` or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+Everyone is welcome to contribute to the Research Crew project! Please open an issue or submit a pull request with your changes.
 
 Let's create wonders together with the power and simplicity of crewAI.
