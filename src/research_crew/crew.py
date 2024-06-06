@@ -3,6 +3,7 @@ from crewai_tools import (
     DirectoryReadTool,
     FileReadTool
 )
+from langchain_community.agent_toolkits import FileManagementToolkit
 from research_crew.tools.search import SearchTool
 from crewai.project import CrewBase, agent, crew, task
 from langchain_openai import ChatOpenAI
@@ -12,16 +13,26 @@ from langchain_core.agents import AgentFinish
 import json
 from dotenv import load_dotenv
 import os
+from langsmith.run_helpers import traceable
 
 load_dotenv()
 
 my_openai_key = os.getenv("OPENAI_API_KEY")
 my_serper_key = os.getenv("SERPAPI_API_KEY")
+my_langchain_key = os.getenv("LANGCHAIN_API_KEY")
+
+WORKING_DIRECTORY = "/Users/ibrahimsaidi/Desktop/Builds/crewAIBuilds/researchCrew/docs"
 
 # Instantiate tools
 docs_tool = DirectoryReadTool("./docs")
 file_tool = FileReadTool("./docs")
 search_tool = SearchTool()
+
+tools = FileManagementToolkit(
+    root_dir=WORKING_DIRECTORY,
+    selected_tools=["read_file", "write_file", "list_directory"],
+).get_tools()
+read_tool, write_tool, list_tool = tools
 
 @CrewBase
 class ResearchCrew():
@@ -29,7 +40,7 @@ class ResearchCrew():
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 
-
+	
 	def llm(self):
 		llm = ChatOpenAI(
 			model_name='gpt-4',
@@ -74,7 +85,8 @@ class ResearchCrew():
 				st.write(type(agent_output))
 				st.write(agent_output)
 
-
+	
+	
 	@agent
 	def researcher(self) -> Agent:
 		return Agent(
@@ -84,27 +96,30 @@ class ResearchCrew():
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "Research Agent")
 		)
-
+	
+	
 	@agent
 	def editor(self) -> Agent:
 		return Agent(
 			config=self.agents_config['editor'],
 			verbose=True,
-			tools=[docs_tool, file_tool],
+			tools=[read_tool, write_tool],
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "Chief Editor")
 		)
+	
 	
 	@agent
 	def writer(self) -> Agent:
 		return Agent(
 			config=self.agents_config['writer'],
-			tools = [docs_tool, file_tool],
+			tools = [read_tool, write_tool],
 			verbose=True,
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "HTML Writer")
 		)
 
+	
 	@task
 	def research_task(self) -> Task:
 		return Task(

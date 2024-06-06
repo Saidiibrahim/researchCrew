@@ -1,7 +1,6 @@
 import requests
 import json
 import os
-from crewai_tools import tool
 from crewai_tools import BaseTool
 
 class SearchTool(BaseTool):
