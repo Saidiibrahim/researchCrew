@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Research Report</title>
+    <title>Weekly Newsletter</title>
     <style>
-        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 0;
+            background-color: #f0f0f0;
         }
         .container {
-            background-color: #fff;
+            width: 80%;
+            margin: auto;
             padding: 20px;
+            background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-        h1, h2, p {
-            margin: 0 0 10px;
-        }
-        h1 {
-            font-size: 24px;
+        h1, h2 {
             color: #333;
         }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
         h2 {
-            font-size: 20px;
-            color: #555;
+            margin: 0;
         }
         p {
-            font-size: 16px;
             color: #666;
-        }
-        a {
-            color: #1a73e8;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+            line-height: 1.5;
         }
         ul {
-            padding-left: 20px;
+            list-style-type: none;
+            padding: 0;
         }
         li {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .read-more {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .read-more a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .read-more a:hover {
+            text-decoration: underline;
+        }
+        .goodbye {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1><!-- TITLE OF THE DAY --></h1>
+        <p><!-- PERSONAL MESSAGE --></p>
         <ul>
             <li>
                 <h2><!-- TITLE OF THE STORY --></h2>
                 <p><!-- SUMMARY OF THE STORY --></p>
                 <p><!-- WHY THIS IS IMPORTANT --></p>
-                <div>
+                <div class="read-more">
                     <p>Read more:</p>
                     <ul>
-                        <li><a href="https://www.example.com"><!-- Link 1 --></a></li>
-                        <li><a href="https://www.example2.com"><!-- Link 2 --></a></li>
+                        <li><a href="https://www.example.com"><!-- LINK 1 --></a>
+                        <li><a href="https://www.example2.com"><!-- LINK 2 --></a>
                     </ul>
                 </div>
             </li>
+
+            <!-- ADD ALL THE OTHER NEWS ITEMS HERE USING THE SAME FORMAT AS THE EXAPLE ABOVE -->
         </ul>
-        <p><!-- Goodbye and see you tomorrow! --></p>
+        <p class="goodbye">Goodbye and see you tomorrow!</p>
     </div>
 </body>
 </html>

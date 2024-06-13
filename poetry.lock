@@ -1107,6 +1107,22 @@ whatsapp = ["flask (>=2.3.3,<3.0.0)", "twilio (>=8.5.0,<9.0.0)"]
 youtube = ["youtube-transcript-api (>=0.6.1,<0.7.0)", "yt_dlp (>=2023.11.14,<2024.0.0)"]
 
 [[package]]
+name = "exa-py"
+version = "1.0.12"
+description = "Python SDK for Exa API."
+optional = false
+python-versions = "*"
+files = [
+    {file = "exa_py-1.0.12-py3-none-any.whl", hash = "sha256:056cb1b912e50982d368cd02851188b5b186e1e64764ed0008854015d902d9d5"},
+    {file = "exa_py-1.0.12.tar.gz", hash = "sha256:128c6969877c168e33c26bea8516217985c5eac69682548446b60b7168633454"},
+]
+
+[package.dependencies]
+openai = "*"
+requests = "*"
+typing-extensions = "*"
+
+[[package]]
 name = "executing"
 version = "2.0.1"
 description = "Get the currently executing AST node of a frame, and other information"
@@ -5937,4 +5953,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<=3.13"
-content-hash = "86a9791b09e239cb8fa96287c59fae92eb9bf1673444ccfdd4eb09984792199b"
+content-hash = "e5de9d5930603d705d570f1cc5fc1d5fee0650ab01674a9cc871acfea994848e"
