@@ -5,6 +5,7 @@ from crewai_tools import (
 )
 from langchain_community.agent_toolkits import FileManagementToolkit
 from research_crew.tools.search import SearchTool
+from research_crew.tools.research import SearchAndContents, FindSimilar, GetContents
 from crewai.project import CrewBase, agent, crew, task
 from langchain_openai import ChatOpenAI
 import streamlit as st
@@ -13,6 +14,7 @@ from langchain_core.agents import AgentFinish
 import json
 from dotenv import load_dotenv
 import os
+from datetime import datetime
 from langsmith.run_helpers import traceable
 
 load_dotenv()
@@ -20,19 +22,20 @@ load_dotenv()
 my_openai_key = os.getenv("OPENAI_API_KEY")
 my_serper_key = os.getenv("SERPAPI_API_KEY")
 my_langchain_key = os.getenv("LANGCHAIN_API_KEY")
+openai_model_name = os.getenv("OPENAI_MODEL_NAME")
 
-WORKING_DIRECTORY = "/Users/ibrahimsaidi/Desktop/Builds/crewAIBuilds/researchCrew/docs"
+# WORKING_DIRECTORY = "/Users/ibrahimsaidi/Desktop/Builds/crewAIBuilds/researchCrew/docs"
 
 # Instantiate tools
 docs_tool = DirectoryReadTool("./docs")
 file_tool = FileReadTool("./docs")
 search_tool = SearchTool()
 
-tools = FileManagementToolkit(
-    root_dir=WORKING_DIRECTORY,
-    selected_tools=["read_file", "write_file", "list_directory"],
-).get_tools()
-read_tool, write_tool, list_tool = tools
+# tools = FileManagementToolkit(
+#     root_dir=WORKING_DIRECTORY,
+#     selected_tools=["read_file", "write_file", "list_directory"],
+# ).get_tools()
+# read_tool, write_tool, list_tool = tools
 
 @CrewBase
 class ResearchCrew():
@@ -43,11 +46,12 @@ class ResearchCrew():
 	
 	def llm(self):
 		llm = ChatOpenAI(
-			model_name='gpt-4',
+			model_name=openai_model_name,
 			api_key=my_openai_key
 		)
 		return llm
 	
+	#TODO: Abstract this to a class in a utils file
 	def step_callback(
         self,
         agent_output: Union[str, List[Tuple[Dict, str]], AgentFinish],
@@ -91,7 +95,7 @@ class ResearchCrew():
 	def researcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['researcher'],
-			tools=[search_tool], # Example of custom tool, loaded on the beginning of file
+			tools=[SearchAndContents(), FindSimilar(), GetContents()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "Research Agent")
@@ -103,18 +107,19 @@ class ResearchCrew():
 		return Agent(
 			config=self.agents_config['editor'],
 			verbose=True,
-			tools=[read_tool, write_tool],
+			tools=[SearchAndContents(), FindSimilar(), GetContents()],
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "Chief Editor")
 		)
 	
 	
 	@agent
-	def writer(self) -> Agent:
+	def designer(self) -> Agent:
 		return Agent(
-			config=self.agents_config['writer'],
-			tools = [read_tool, write_tool],
+			config=self.agents_config['designer'],
+			# tools = [read_tool, write_tool],
 			verbose=True,
+			allow_delegation=False,
 			llm=self.llm(),
 			step_callback=lambda step: self.step_callback(step, "HTML Writer")
 		)
@@ -125,7 +130,7 @@ class ResearchCrew():
 		return Task(
 			config=self.tasks_config['research_task'],
 			agent=self.researcher(),
-			output_file='./docs/research_report.md'
+			output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_research_task.md"
 		)
 
 	@task
@@ -133,22 +138,22 @@ class ResearchCrew():
 		return Task(
 			config=self.tasks_config['edit_task'],
 			agent=self.editor(),
-			output_file='./docs/edited_report.md'
+			output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_edit_task.md"
 		)
 	
 	@task
 	def newsletter_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['research_task'],
-			agent=self.writer(),
-			output_file='./docs/research_report.html'
+			config=self.tasks_config['newsletter_task'],
+			agent=self.designer(),
+			output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_newsletter_task.html"
 		)
 
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the Research crew"""
 		return Crew(
-			agents=[self.researcher(), self.editor(), self.writer()], # Automatically created by the @agent decorator
+			agents=[self.researcher(), self.editor(), self.designer()], # Automatically created by the @agent decorator
 			tasks=[self.research_task(), self.edit_task(), self.newsletter_task()], # Automatically created by the @task decorator
 			process=Process.sequential,
 			verbose=2,
