@@ -4,6 +4,7 @@ from crewai_tools import (
     FileReadTool
 )
 from langchain_community.agent_toolkits import FileManagementToolkit
+from langchain_anthropic import ChatAnthropic
 from research_crew.tools.search import SearchTool
 from research_crew.tools.research import SearchAndContents, FindSimilar, GetContents
 from crewai.project import CrewBase, agent, crew, task
@@ -19,23 +20,12 @@ from langsmith.run_helpers import traceable
 
 load_dotenv()
 
-my_openai_key = os.getenv("OPENAI_API_KEY")
-my_serper_key = os.getenv("SERPAPI_API_KEY")
-my_langchain_key = os.getenv("LANGCHAIN_API_KEY")
-openai_model_name = os.getenv("OPENAI_MODEL_NAME")
-
 # WORKING_DIRECTORY = "/Users/ibrahimsaidi/Desktop/Builds/crewAIBuilds/researchCrew/docs"
 
 # Instantiate tools
 docs_tool = DirectoryReadTool("./docs")
 file_tool = FileReadTool("./docs")
 search_tool = SearchTool()
-
-# tools = FileManagementToolkit(
-#     root_dir=WORKING_DIRECTORY,
-#     selected_tools=["read_file", "write_file", "list_directory"],
-# ).get_tools()
-# read_tool, write_tool, list_tool = tools
 
 @CrewBase
 class ResearchCrew():
@@ -44,12 +34,20 @@ class ResearchCrew():
 	tasks_config = 'config/tasks.yaml'
 
 	
-	def llm(self):
-		llm = ChatOpenAI(
-			model_name=openai_model_name,
-			api_key=my_openai_key
-		)
-		return llm
+	def llm(self, model_name: str, model_provider: str = "openai"):
+		if model_provider == "openai":
+			return ChatOpenAI(
+				model=model_name, 
+				api_key=os.getenv("OPENAI_API_KEY"),
+			)
+		elif model_provider == "anthropic":
+			return ChatAnthropic(
+				model_name=model_name, 
+				api_key=os.getenv("ANTHROPIC_API_KEY"),
+				max_tokens = 4096,
+			)
+		else:
+			raise ValueError(f"Invalid model provider: {model_provider}")
 	
 	#TODO: Abstract this to a class in a utils file
 	def step_callback(
@@ -97,7 +95,7 @@ class ResearchCrew():
 			config=self.agents_config['researcher'],
 			tools=[SearchAndContents(), FindSimilar(), GetContents()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
-			llm=self.llm(),
+			llm=self.llm(model_provider="openai", model_name="gpt-4-turbo"),
 			step_callback=lambda step: self.step_callback(step, "Research Agent")
 		)
 	
@@ -108,7 +106,7 @@ class ResearchCrew():
 			config=self.agents_config['editor'],
 			verbose=True,
 			tools=[SearchAndContents(), FindSimilar(), GetContents()],
-			llm=self.llm(),
+			llm=self.llm(model_provider="openai", model_name="gpt-4-turbo"),
 			step_callback=lambda step: self.step_callback(step, "Chief Editor")
 		)
 	
@@ -120,7 +118,7 @@ class ResearchCrew():
 			# tools = [read_tool, write_tool],
 			verbose=True,
 			allow_delegation=False,
-			llm=self.llm(),
+			llm=self.llm(model_provider="openai", model_name="gpt-4-turbo"),
 			step_callback=lambda step: self.step_callback(step, "HTML Writer")
 		)
 
